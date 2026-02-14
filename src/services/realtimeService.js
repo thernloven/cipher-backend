@@ -10,7 +10,7 @@ export async function createSession(language1, language2) {
   const instructions = buildInstructions(language1, language2);
 
   const response = await fetch(
-    "https://api.openai.com/v1/realtime/sessions",
+    "https://api.openai.com/v1/realtime/client_secrets",
     {
       method: "POST",
       headers: {
@@ -18,11 +18,24 @@ export async function createSession(language1, language2) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o-realtime-preview",
-        voice: "shimmer",
-        instructions,
-        input_audio_transcription: {
-          model: "whisper-1",
+        expires_after: {
+          anchor: "created_at",
+          seconds: 600,
+        },
+        session: {
+          type: "realtime",
+          model: "gpt-realtime",
+          instructions,
+          audio: {
+            input: {
+              transcription: {
+                model: "whisper-1",
+              },
+            },
+            output: {
+              voice: "shimmer",
+            },
+          },
         },
       }),
     }

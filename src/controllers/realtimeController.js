@@ -11,16 +11,16 @@ export async function createRealtimeSession(req, res) {
       });
     }
 
-    const sessionData = await createSession(language1, language2);
+    const data = await createSession(language1, language2);
 
     res.json({
       success: true,
       data: {
-        ephemeral_key: sessionData.client_secret.value,
-        expires_at: sessionData.client_secret.expires_at,
-        session_id: sessionData.id,
-        model: sessionData.model,
-        voice: sessionData.voice,
+        ephemeral_key: data.value,
+        expires_at: data.expires_at,
+        session_id: data.session?.id || "",
+        model: data.session?.model || "gpt-realtime",
+        voice: data.session?.audio?.output?.voice || "shimmer",
       },
     });
   } catch (error) {
