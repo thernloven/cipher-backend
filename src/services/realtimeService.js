@@ -10,7 +10,7 @@ export async function createSession(language1, language2) {
   const instructions = buildInstructions(language1, language2);
 
   const response = await fetch(
-    "https://api.openai.com/v1/realtime/sessions",
+    "https://api.openai.com/v1/realtime/client_secrets",
     {
       method: "POST",
       headers: {

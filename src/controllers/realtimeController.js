@@ -13,14 +13,16 @@ export async function createRealtimeSession(req, res) {
 
     const sessionData = await createSession(language1, language2);
 
+    // /v1/realtime/client_secrets returns { client_secret: { value, expires_at }, ... }
+    const clientSecret = sessionData.client_secret || {};
     res.json({
       success: true,
       data: {
-        ephemeral_key: sessionData.client_secret.value,
-        expires_at: sessionData.client_secret.expires_at,
-        session_id: sessionData.id,
-        model: sessionData.model,
-        voice: sessionData.voice,
+        ephemeral_key: clientSecret.value,
+        expires_at: clientSecret.expires_at,
+        session_id: sessionData.id || "",
+        model: sessionData.model || "gpt-4o-realtime-preview",
+        voice: sessionData.voice || "shimmer",
       },
     });
   } catch (error) {
